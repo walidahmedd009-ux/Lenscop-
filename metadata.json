@@ -1,0 +1,6 @@
+{
+  "name": "Lenscop",
+  "description": "Turn any skill or subject into a clear, structured learning course from beginner to advanced with roadmaps, hands-on lessons, and interactive checkmarks.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
