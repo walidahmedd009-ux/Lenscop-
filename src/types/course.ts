@@ -91,6 +91,8 @@ export interface Course {
   prerequisites: string[];
   targetAudience: string;
   createdAt: string;
+  whatItIs?: string; // Meaning and definition of this niche or skill
+  guidelines?: string[]; // Core guidelines for this niche or skill
   modules: CourseModule[];
   capstoneProject?: RealWorldProject;
   isAiGenerated?: boolean;

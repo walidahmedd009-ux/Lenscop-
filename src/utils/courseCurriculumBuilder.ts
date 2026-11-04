@@ -685,13 +685,17 @@ Before touching any piece, calculate:
 **Compounding** is the mathematical phenomenon where your money earns money, and then the earnings earn earnings of their own. Over 10, 20, or 30 years, compound interest creates exponential curve growth that dwarfs your original contributions.
 
 Albert Einstein famously called compound interest the eighth wonder of the world: *"He who understands it, earns it; he who doesn't, pays it."*`,
-        realWorldMechanism: `The **Rule of 72** is a fast mental math trick to know when your money will double:
-$$\\text{Years to double} = \\frac{72}{\\text{Annual Return Percentage}}$$
-- In a traditional bank account paying 0.5%, your money doubles every $72 / 0.5 = 144$ years! (Inflation eats it alive).
-- In a broad-market index fund historically returning ~8% annualized, your money doubles roughly every $72 / 8 = 9$ years!
-- $10,000 invested at age 25 becomes $20k at 34, $40k at 43, $80k at 52, and $160k at 61—without adding another dollar!`,
-        actionableTechnique: `The **Automation Rule**:
-Do not save "whatever is left over at the end of the month" (because nothing is ever left over).
+        realWorldMechanism: `The Rule of 72 is a fast mental math trick to know when your money will double:
+
+Years to double = 72 divided by your annual return percentage
+
+- In a traditional bank account paying 0.5%, your money doubles every 144 years (72 / 0.5). Inflation eats it alive.
+- In a broad-market index fund historically returning around 8% annualized, your money doubles roughly every 9 years (72 / 8).
+- A 10,000 dollar investment at age 25 becomes 20k at 34, 40k at 43, 80k at 52, and 160k at 61, without adding another dollar!`,
+        actionableTechnique: `The Automation Rule:
+
+Do not save whatever is left over at the end of the month (because nothing is ever left over).
+
 Pay yourself first: set up an automatic bank transfer on payday that routes 15-20% into an investment account before you ever see it in your checking account.`,
         keyTakeaways: [
           'Compound interest produces exponential, non-linear wealth over extended time horizons.',
@@ -806,6 +810,12 @@ export function buildAuthenticCourse(topic: string, level: string = 'Beginner'):
       slug,
       tagline: tpl.tagline(cleanTopic),
       description: tpl.description(cleanTopic),
+      whatItIs: `${cleanTopic} is the discipline of ${tpl.description(cleanTopic).toLowerCase()}`,
+      guidelines: [
+        `Focus on the primary 20% of foundational mechanics that produce 80% of results in ${cleanTopic}.`,
+        `Practice in deliberate 10-minute micro-drills to build muscle memory and pattern recognition.`,
+        `Measure feedback after every iteration rather than guessing.`
+      ],
       category: tpl.category,
       difficulty: (level as any) || 'Beginner',
       estimatedHours: 6,
@@ -835,7 +845,7 @@ export function buildAuthenticCourse(topic: string, level: string = 'Beginner'):
                 title: les.title,
                 durationMinutes: les.duration,
                 summary: les.summary,
-                detailedExplanation: `### The Big Idea\n\n${les.bigIdea}\n\n### How It Works in Practice\n\n${les.realWorldMechanism}\n\n### The Actionable Technique\n\n${les.actionableTechnique}`,
+                detailedExplanation: `### What It Is & The Meaning\n\n${les.bigIdea}\n\n### The Core Guidelines\n\n${les.realWorldMechanism}\n\n### Practical Action Steps\n\n${les.actionableTechnique}`,
                 keyTakeaways: les.keyTakeaways,
                 curatedVideos: [
                   {

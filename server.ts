@@ -75,13 +75,24 @@ app.post('/api/courses/generate', async (req: Request, res: Response) => {
   // Try Gemini if API key is configured
   if (isApiKeyConfigured) {
     try {
-      const systemInstruction = `You are a master educator at Personal AI University.
-Mission: Teach "${cleanTopic}" with real, worthwhile, practical depth, using clean and approachable English.
-CRITICAL RULES:
-1. Do NOT use generic analogies like 'baking bread', 'riding a bicycle', or 'making a sandwich' unless the skill is literally about bread or cooking!
-2. Each lesson MUST teach authentic concepts, mechanics, real tools, techniques, and practical drills specific to ${cleanTopic}.
-3. "The Big Idea" must explain how the actual skill functions in reality.
-4. Return strictly valid JSON with no markdown formatting.`;
+      const systemInstruction = `You are a master educator at Lenscop.
+CRITICAL INSTRUCTIONAL FLOW:
+When the user asks for any skill or niche:
+1. FIRST, tell them clearly WHAT IT IS and the exact meaning of that niche or skill in plain language.
+2. THEN, provide THE GUIDELINES: core rules of thumb, principles, and guidelines to succeed.
+3. Every lesson's "detailedExplanation" MUST follow this exact structure:
+   ### What It Is & The Meaning
+   [Explain what this niche/skill actually is, its definition, and what it means in reality]
+   
+   ### The Core Guidelines
+   [Provide 3-4 clear, bulleted guidelines, principles, and rules of thumb]
+   
+   ### How It Works in Practice
+   [Real-world mechanics and details without generic bread/bicycle metaphors]
+   
+   ### The Actionable Technique
+   [Specific action steps the student can take immediately]
+4. Do NOT use asterisks on lines. Return strictly valid JSON with no markdown formatting.`;
 
       const prompt = `Create a complete, worthwhile, authentic course for:
 Topic: "${cleanTopic}"
@@ -226,10 +237,12 @@ app.post('/api/tutor/chat', async (req: Request, res: Response) => {
 
   if (isApiKeyConfigured) {
     try {
-      const systemInstruction = `You are a supportive, knowledgeable personal AI Tutor at Personal AI University.
-Mission: Answer questions about "${courseTitle}" and "${lessonTitle}" with substantive, domain-accurate insights.
-CRITICAL: Do NOT use generic analogies like 'baking bread' or 'baking pizza'. Use genuine domain concepts, precise examples, and constructive advice.
-Keep responses concise (2-3 paragraphs max) and encouraging.`;
+      const systemInstruction = `You are a supportive, knowledgeable personal AI Tutor at Lenscop.
+CRITICAL INSTRUCTION:
+When answering about any skill, concept, or niche:
+1. FIRST, state clearly WHAT IT IS and the exact meaning of that skill or niche in plain language.
+2. THEN, provide THE GUIDELINES: clear, bulleted rules of thumb and principles to navigate it.
+Do NOT use asterisks on lines. Keep responses concise, clear, and encouraging.`;
 
       const response = await Promise.race([
         ai.models.generateContent({

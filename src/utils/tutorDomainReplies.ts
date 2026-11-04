@@ -16,16 +16,16 @@ export function getDomainAwareTutorReply(
     context.includes('react') ||
     context.includes('software')
   ) {
-    if (q.includes('error') || q.includes('bug') || q.includes('debug')) {
-      return `When you run into a bug or error in **${courseTitle || 'Coding'}**, remember this:\n\n1. **Errors are GPS recalculations, not failures:** The computer is simply telling you the exact line number where its expectations broke down (like looking for a variable named \`user\` when you typed \`usr\`).\n2. **Read the stack trace from the bottom up:** Look at the last line first—it specifies the exact error type and file location.\n3. **Print or inspect values right before the line:** 90% of bugs happen because a variable holds \`undefined\` or a different type than you expected.`;
-    }
-    if (q.includes('analogy') || q.includes('example') || q.includes('explain')) {
-      return `Here is a clear mental model for **${lessonTitle || courseTitle}**:\n\nThink of code execution like an **automated factory assembly line**:\n- **Variables** are labeled bins holding specific parts.\n- **Functions** are specialized robotic arms that take parts from one bin, weld or assemble them, and place the finished component in the next bin.\n- **Conditionals (if/else)** are sensor gates that route defective items to a rework bin and approved items to shipping.\n\nWhen writing code, always trace: What enters the machine? How is it transformed? Where is it output?`;
-    }
-    return `That is a fundamental question about **${lessonTitle || courseTitle}**!\n\nIn programming, the golden habit is writing **pseudocode** before touching syntax. Write your logic in plain English sentences first:\n- "1. Check if user input is valid."\n- "2. If valid, update the count in memory."\n- "3. Display the updated count."\n\nOnce your logical steps are clear in your own words, translating each line into syntax takes only seconds.`;
+    return `### What It Is & The Meaning
+Coding is writing exact, logical instructions that computers execute to process data and solve problems. Its meaning is translating human logic into structured syntax that automates tasks and builds interactive digital systems.
+
+### The Guidelines
+- Guideline 1: Write pseudocode in plain English before writing any syntax. If you can explain the step-by-step logic in human words, translating it to code takes only seconds.
+- Guideline 2: Read error messages from the bottom line up. Errors are GPS recalculations showing the exact line where execution broke, usually because of an unexpected variable type or typo.
+- Guideline 3: Test small pieces immediately. Never write 50 lines without running and verifying each 5-line chunk.`;
   }
 
-  // Music & Instruments
+  // Music & Guitar
   if (
     context.includes('guitar') ||
     context.includes('piano') ||
@@ -34,10 +34,45 @@ export function getDomainAwareTutorReply(
     context.includes('drums') ||
     context.includes('chord')
   ) {
-    if (q.includes('switch') || q.includes('transition') || q.includes('chord') || q.includes('finger')) {
-      return `To eliminate the pause between chords or notes in **${courseTitle || 'Music'}**:\n\n1. **Use the 60-Second Transition Drill:** Pick the two chords you find trickiest. Set a 1-minute timer and switch back and forth continuously without stopping.\n2. **Move fingers as a single claw:** Don't place finger 1, then finger 2, then finger 3. Visualize the entire shape in the air and land all fingers simultaneously.\n3. **Keep your rhythm hand moving:** Even if your fretting hand misses slightly, keep the beat! Your ear and brain will force your fingers to catch up with the groove.`;
-    }
-    return `In **${lessonTitle || courseTitle}**, remember that clean tone comes from **geometry and leverage**, not muscle strain:\n\n- On guitar/strings: Place your fingertips directly behind the metal fret wire (not far back in the fret). This eliminates buzzing with 70% less finger pressure.\n- On piano: Keep wrists relaxed and level with the keys, playing with naturally curved fingers using arm weight rather than finger tension.\n\nRelax your shoulders and breathe out when playing difficult passages!`;
+    return `### What It Is & The Meaning
+Music and instrument playing is the physical craft of turning mechanical vibrations into structured melody, harmony, and rhythm. Its meaning is developing neuromuscular coordination so your fingers instantly land on specific geometry without conscious hesitation.
+
+### The Guidelines
+- Guideline 1: Land all fingers simultaneously as a single claw, rather than placing one finger at a time.
+- Guideline 2: Place fingertips directly behind the metal fret wire to produce clear tone with 70% less finger pressure.
+- Guideline 3: Keep your rhythm hand moving constantly. Even if your fretting hand misses a transition, keeping the groove trains your brain to catch up.`;
+  }
+
+  // Personal Finance & Investing
+  if (
+    context.includes('finance') ||
+    context.includes('invest') ||
+    context.includes('money') ||
+    context.includes('budget')
+  ) {
+    return `### What It Is & The Meaning
+Personal finance is the management of your capital, savings, and investments. Its meaning is putting surplus money into compounding productive assets so that your money generates returns over time, rather than solely trading your personal hours for an income.
+
+### The Guidelines
+- Guideline 1: Pay yourself first. Automatically route 15-20% into an investment account on payday before discretionary spending.
+- Guideline 2: Respect the Rule of 72. Divide 72 by your annual return to know when your money doubles. At an 8% return, capital doubles every 9 years.
+- Guideline 3: Minimize fees. High 1-2% management fees erode up to a third of your lifetime compounding wealth. Choose low-cost broad index funds.`;
+  }
+
+  // Photography & Visuals
+  if (
+    context.includes('photo') ||
+    context.includes('camera') ||
+    context.includes('draw') ||
+    context.includes('art')
+  ) {
+    return `### What It Is & The Meaning
+Photography literally means drawing with light. It is the craft of capturing three-dimensional visual reality onto a two-dimensional frame through deliberate exposure, light direction, and composition.
+
+### The Guidelines
+- Guideline 1: Prioritize light source over gear. Large soft light (like a daytime window) always produces better images than harsh ceiling bulbs.
+- Guideline 2: Simplify the background. Before taking a picture, scan the edges of your frame and remove visual clutter.
+- Guideline 3: Tap to lock focus and exposure on your primary subject before composing your shot.`;
   }
 
   // Public Speaking & Communication
@@ -48,27 +83,33 @@ export function getDomainAwareTutorReply(
     context.includes('speaking') ||
     context.includes('pitch')
   ) {
-    if (q.includes('nervous') || q.includes('anxiety') || q.includes('fear') || q.includes('um')) {
-      return `Speaking anxiety is completely normal—it is just adrenaline. Here is how top speakers channel it:\n\n1. **The Power Pause:** Replace filler words ("um", "like", "you know") with silence. Close your mouth, inhale gently through your nose for 2 seconds, and look at one person. The audience interprets silence as poise and mastery.\n2. **The 3-Second Rule:** Focus on giving one complete sentence to one person in the audience before shifting your eyes to another section.\n3. **Reframe nervousness as excitement:** Tell yourself: *"My heart is beating fast because I have an important idea to share with these people."*`;
-    }
-    return `In **${lessonTitle || courseTitle}**, remember the **One Throughline Rule**:\n\nAudiences cannot remember 15 different slides or points. Before you speak, pass the Billboard Test: write down the single 10-word sentence you want your listeners to repeat tomorrow. Every story, chart, and example in your talk must serve that one sentence!`;
+    return `### What It Is & The Meaning
+Public speaking is the art of delivering a focused message to an audience to inform, inspire, or persuade. Its meaning is serving the listener by transferring a single valuable perspective from your mind into theirs.
+
+### The Guidelines
+- Guideline 1: Pass the Billboard Test. Identify the single 10-word sentence you want your audience to remember tomorrow. Everything in your presentation must support that sentence.
+- Guideline 2: Replace filler words with silent pauses. Inhale gently through your nose for 2 seconds. The audience hears silence as confidence and poise.
+- Guideline 3: Talk to one person at a time. Deliver a full thought to one pair of eyes before shifting your gaze.`;
   }
 
   // Chess & Strategy
   if (context.includes('chess') || context.includes('strategy') || context.includes('tactics')) {
-    return `In **${lessonTitle || courseTitle}**, the key to tactical vision is **Loose Pieces (LPDO - Loose Pieces Drop Off)**:\n\nWhenever you or your opponent have an undefended piece on the board, a tactical alarm should trigger. 90% of tactics (forks, pins, skewers) succeed because a piece lacked defenders.\n\nBefore every move, execute the **CCT Scan**: Checks, Captures, Threats. Ask yourself: *"What does my opponent threaten with their last move, and what undefended square did they leave behind?"*`;
+    return `### What It Is & The Meaning
+Chess is a deterministic game of calculation, positional strategy, and tactical foresight. Its meaning is anticipating your opponent's intentions and controlling key central territory with coordinated pieces.
+
+### The Guidelines
+- Guideline 1: Look for Loose Pieces. 90% of tactical combinations succeed because a piece had no defender.
+- Guideline 2: Run the CCT Scan before every move: Checks, Captures, and Threats.
+- Guideline 3: Ask what your opponent's last move threatens and what square they left unprotected.`;
   }
 
-  // Finance & Investing
-  if (context.includes('finance') || context.includes('invest') || context.includes('money') || context.includes('budget')) {
-    return `In **${lessonTitle || courseTitle}**, the mathematical reality is that **consistency and low fees beat speculative guessing**:\n\n- The Rule of 72 tells you when your wealth doubles ($72 / \\text{Annual Return}$). At an 8% index return, your capital doubles approximately every 9 years.\n- Automate your investments on payday: pay yourself first before discretionary spending.\n- Avoid high-fee funds that charge 1-2% annually—those fees eat up to a third of your lifetime compounding gains!`;
-  }
+  // Generic domain response (Authentic definition + clear guidelines)
+  const skillName = (lessonTitle || courseTitle || 'this discipline').replace(/:.*/, '').trim();
+  return `### What It Is & The Meaning
+${skillName} is a focused discipline of practical knowledge and execution. Its meaning is understanding the core variables and mechanics that govern outcomes, allowing you to achieve consistent, high-quality results without guesswork.
 
-  // Photography & Art
-  if (context.includes('photo') || context.includes('camera') || context.includes('draw') || context.includes('art')) {
-    return `In **${lessonTitle || courseTitle}**, the core secret is **learning to see light and primary shapes**:\n\n- Great photos don't come from expensive gear; they come from large, soft light sources (like a daytime window) rather than harsh overhead ceiling bulbs.\n- In drawing and art: Break down any complex subject into four basic building blocks: cubes, spheres, cylinders, and cones. Once the 3D construction is accurate, shading and detail become effortless.`;
-  }
-
-  // Generic domain response (Authentic and practical, zero bread/bicycles)
-  return `That is a sharp question about **${lessonTitle || courseTitle}**!\n\nHere is the most practical principle practitioners rely on:\n\n1. **Isolate the primary variable:** When a technique or exercise feels difficult, do not change multiple factors at once. Identify the single input or movement causing friction.\n2. **The 50% Speed Rule:** Slow down the procedure by half. Executing form cleanly at slow speed builds the neurological pathways required for effortless speed later.\n3. **Immediate feedback:** Check your result against a clear standard immediately after each repetition so you calibrate accurately.`;
+### The Guidelines
+- Guideline 1: Identify the primary variable. When starting or troubleshooting, isolate the single input that controls the majority of results.
+- Guideline 2: The 50% Speed Rule. Slow down your practice by half to build clean form and accurate neural pathways before attempting speed.
+- Guideline 3: Establish an immediate feedback loop. Compare each repetition against a clear standard right away so you calibrate accurately.`;
 }

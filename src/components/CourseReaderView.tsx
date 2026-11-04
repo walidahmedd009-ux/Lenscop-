@@ -18,6 +18,92 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
+function cleanLatexAndMath(raw: string): string {
+  return raw
+    // Clean LaTeX fractions: \frac{a}{b} -> (a / b)
+    .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, '($1 / $2)')
+    // Clean \text{...} -> ...
+    .replace(/\\text\{([^}]+)\}/g, '$1')
+    // Remove block math delimiters $$...$$
+    .replace(/\$\$([^$]+)\$\$/g, '$1')
+    // Remove inline math dollar signs like $72 / 8 = 9$ while preserving currency amounts like $10,000 or $20k
+    .replace(/\$([0-9\s.+\-*/=()a-zA-Z]+)\$/g, (_match, inner) => {
+      if (/^\s*\d+([,.]\d+)?[kKmMbB]?\s*$/.test(inner)) {
+        return `$${inner.trim()}`;
+      }
+      return inner.trim();
+    })
+    .replace(/\\/g, '')
+    .trim();
+}
+
+function getSkillMeaning(title: string, category: string, desc: string): string {
+  const clean = title.replace(/:.*/, '').trim();
+  const lower = clean.toLowerCase();
+
+  if (lower.includes('guitar')) {
+    return 'Guitar is a fretted string instrument. Playing guitar means using your fretting hand to press strings against fret wires to form specific chord shapes and notes, while your picking hand rhythmically strikes strings to produce harmonious acoustic or electric music.';
+  }
+  if (lower.includes('finance') || lower.includes('money') || lower.includes('invest')) {
+    return 'Personal finance is the system of allocating capital between spending, saving, and investing. Its meaning is putting surplus capital into compounding productive assets while eliminating high-interest debt and unnecessary fees, so your capital works for you instead of you solely working for capital.';
+  }
+  if (lower.includes('ai') || lower.includes('machine learning')) {
+    return 'Artificial Intelligence is software designed to recognize statistical patterns in large datasets and make accurate predictions or generate responses. Its meaning is moving from rigid manual programming to adaptive models that learn directly from feedback and examples.';
+  }
+  if (lower.includes('photo') || lower.includes('camera')) {
+    return 'Photography literally translates to drawing with light. It is the craft of capturing three-dimensional visual reality into a two-dimensional frame by controlling light quality, direction, camera perspective, and composition.';
+  }
+  if (lower.includes('cook') || lower.includes('culinary')) {
+    return 'Cooking is the craft of applying heat, acidity, and seasoning to transform raw ingredients into balanced, nourishing food by controlling moisture, surface caramelization, and flavor balance.';
+  }
+  if (lower.includes('learn') || lower.includes('memory')) {
+    return 'Accelerated learning is the science of acquiring and retaining skills rapidly using neurological principles like spaced repetition, retrieval practice, and active recall rather than passive rereading.';
+  }
+  if (lower.includes('code') || lower.includes('python') || lower.includes('web') || lower.includes('programming')) {
+    return 'Programming is the craft of writing structured logical instructions that computers execute. Its meaning is translating human goals into precise algorithmic steps that automate workflows and build digital tools.';
+  }
+  return `${clean} is a practical discipline centered on ${desc ? desc.toLowerCase() : 'mastering foundational principles, techniques, and repeatable workflows to achieve dependable, high-quality outcomes'}.`;
+}
+
+function getSkillGuidelines(title: string, skills: string[]): string[] {
+  const clean = title.replace(/:.*/, '').trim();
+  const lower = clean.toLowerCase();
+
+  if (lower.includes('guitar')) {
+    return [
+      'Guideline 1: Place fretting fingertips directly behind metal fret wires, not in the middle of frets, to produce clean tone with 70% less finger pressure.',
+      'Guideline 2: Keep your strumming hand in constant rhythm even when switching chords. Muscle memory catches up when rhythm never stops.',
+      'Guideline 3: Practice in short 10-minute daily blocks rather than occasional long sessions to build finger calluses and effortless chord transitions.'
+    ];
+  }
+  if (lower.includes('finance') || lower.includes('invest')) {
+    return [
+      'Guideline 1: Pay yourself first by automatically routing 15-20% into an investment account on payday before discretionary spending.',
+      'Guideline 2: Keep 3 to 6 months of basic living expenses in an emergency fund before taking speculative risks.',
+      'Guideline 3: Rely on low-cost broad-market index funds over decades instead of trying to time short-term market fluctuations.'
+    ];
+  }
+  if (lower.includes('photo')) {
+    return [
+      'Guideline 1: Light always beats camera gear. Shoot near large, soft natural light sources like north-facing daytime windows.',
+      'Guideline 2: Clean the background. Move your camera or subject to eliminate visual distractions before pressing the shutter.',
+      'Guideline 3: Lock focus and exposure deliberately on your primary subject before framing your composition.'
+    ];
+  }
+  if (lower.includes('ai')) {
+    return [
+      'Guideline 1: Provide clear context, specific constraints, and desired output formats rather than open-ended vague requests.',
+      'Guideline 2: Iterate step-by-step by breaking complex tasks into sequential prompts rather than one giant prompt.',
+      'Guideline 3: Always verify factual assertions and code logic against real execution and domain documentation.'
+    ];
+  }
+  return [
+    `Guideline 1: Master the primary 20% of foundational mechanics that produce 80% of results in ${clean}.`,
+    `Guideline 2: Practice deliberate, slow-motion repetitions to build pristine neurological patterns before attempting speed.`,
+    `Guideline 3: Establish an immediate feedback loop after every repetition so you catch and correct mistakes in seconds.`
+  ];
+}
+
 interface CourseReaderViewProps {
   course: Course;
   completedLessonIds: string[];
@@ -89,7 +175,7 @@ export function CourseReaderView({
   const sampleQuestion = quiz?.questions[0];
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8 space-y-8 pb-32">
+    <div className="max-w-2xl mx-auto px-4 py-8 space-y-8 pb-60 sm:pb-64">
       
       {/* Course Header Banner (Black & White) */}
       <div className="p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 space-y-3">
@@ -112,6 +198,33 @@ export function CourseReaderView({
             className="h-full bg-black dark:bg-white rounded-full transition-all duration-300"
             style={{ width: `${percent}%` }}
           />
+        </div>
+      </div>
+
+      {/* What It Is (The Meaning) & The Guidelines (First thing shown when a person asks for a skill or niche) */}
+      <div className="p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 space-y-4 shadow-2xs">
+        <div>
+          <div className="text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1.5 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-black dark:bg-white shrink-0" />
+            <span>What It Is & The Meaning</span>
+          </div>
+          <p className="text-sm sm:text-base text-black dark:text-white leading-7 sm:leading-8">
+            {course.whatItIs || getSkillMeaning(course.title, course.category, course.description)}
+          </p>
+        </div>
+
+        <div className="pt-3 border-t border-neutral-200 dark:border-neutral-800 space-y-2">
+          <div className="text-[11px] font-bold text-neutral-500 uppercase tracking-wider">
+            The Guidelines
+          </div>
+          <div className="space-y-2">
+            {(course.guidelines || getSkillGuidelines(course.title, course.skillsAcquired)).map((g, gIdx) => (
+              <div key={gIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-neutral-800 dark:text-neutral-200 leading-6 sm:leading-7">
+                <span className="w-1.5 h-1.5 rounded-full bg-black dark:bg-white mt-2.5 shrink-0" />
+                <span>{g}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -260,24 +373,79 @@ export function CourseReaderView({
 
             {/* Simple Explanation Content (Bigger lines, spacious line height, zero asterisks) */}
             <div className="space-y-6 text-base sm:text-lg text-neutral-800 dark:text-neutral-200 leading-8 sm:leading-9">
-              {activeLesson.detailedExplanation.split('\n\n').map((para, pIdx) => {
-                const cleanPara = para.replace(/\*/g, '').trim();
-                if (!cleanPara) return null;
+              {activeLesson.detailedExplanation.split('\n\n').map((block, bIdx) => {
+                const cleanedBlock = cleanLatexAndMath(block.replace(/\*/g, '')).trim();
+                if (!cleanedBlock) return null;
 
-                if (cleanPara.startsWith('### ')) {
+                if (cleanedBlock.startsWith('### ')) {
                   return (
                     <h3
-                      key={pIdx}
+                      key={bIdx}
                       className="text-lg sm:text-xl font-bold text-black dark:text-white font-display pt-3 pb-1"
                     >
-                      {cleanPara.replace('### ', '')}
+                      {cleanedBlock.replace('### ', '')}
                     </h3>
                   );
                 }
 
+                // Check for lines within this block (e.g. bullet points or formula lines)
+                const lines = cleanedBlock.split('\n').map((l) => l.trim()).filter(Boolean);
+
+                if (lines.some((l) => l.startsWith('- ') || l.startsWith('• '))) {
+                  return (
+                    <div key={bIdx} className="space-y-3">
+                      {lines.map((line, lIdx) => {
+                        const isBullet = line.startsWith('- ') || line.startsWith('• ');
+                        const text = isBullet ? line.replace(/^[-•]\s*/, '') : line;
+
+                        if (isBullet) {
+                          return (
+                            <div key={lIdx} className="flex items-start gap-3 pl-1">
+                              <span className="w-1.5 h-1.5 rounded-full bg-black dark:bg-white mt-3.5 shrink-0 opacity-80" />
+                              <span className="leading-8 sm:leading-9 flex-1">{text}</span>
+                            </div>
+                          );
+                        }
+
+                        // Check if it is a formula or calculation
+                        const isFormula = text.includes(' = ') && (text.includes(' / ') || text.includes('divided by'));
+                        if (isFormula) {
+                          return (
+                            <div
+                              key={lIdx}
+                              className="p-3.5 rounded-xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 font-mono text-sm sm:text-base text-black dark:text-white leading-relaxed my-2"
+                            >
+                              {text}
+                            </div>
+                          );
+                        }
+
+                        return (
+                          <p key={lIdx} className="leading-8 sm:leading-9 font-normal">
+                            {text}
+                          </p>
+                        );
+                      })}
+                    </div>
+                  );
+                }
+
+                // Check if the entire block is a formula line
+                const isFormulaBlock = cleanedBlock.includes(' = ') && (cleanedBlock.includes(' / ') || cleanedBlock.includes('divided by'));
+                if (isFormulaBlock && lines.length === 1) {
+                  return (
+                    <div
+                      key={bIdx}
+                      className="p-3.5 rounded-xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 font-mono text-sm sm:text-base text-black dark:text-white leading-relaxed my-2"
+                    >
+                      {cleanedBlock}
+                    </div>
+                  );
+                }
+
                 return (
-                  <p key={pIdx} className="leading-8 sm:leading-9 font-normal">
-                    {cleanPara}
+                  <p key={bIdx} className="leading-8 sm:leading-9 font-normal">
+                    {cleanedBlock}
                   </p>
                 );
               })}
